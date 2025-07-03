@@ -438,7 +438,7 @@
       /></a>
     </div>
 
-    <button onclick="showForm()" class="btn-getintouch">Get in Touch</button>
+    <button onclick="showForm()" class="btn-getintouch">Get In Touch</button>
     <div id="formWrapper" style="display: none"></div>
 
     <footer>
@@ -473,7 +473,7 @@
 
     <script>
       const GS_API_URL =
-        "https://script.google.com/macros/s/AKfycbylSiVc177aOGCktaO7gMSl7UE2tMaH_JssGlE52zRj0mb6uAr2uXVBeaU5bzBLLG0CuQ/exec";
+        "https://script.google.com/macros/s/AKfycbyTKBYI2ZZZ85yMalV1LRgcSg4h3re7mL3GER8PEBBlcTh3x4sHrj8hSMR-l0lcJZ2Zwg/exec";
       const FORMSPREE_URL = "https://formspree.io/f/mnnvbjzb";
       const ADMIN_WHATSAPP_NUMBER = "6281237858515";
 
@@ -541,7 +541,8 @@
 
       async function submitForm(e) {
         e.preventDefault();
-        const formData = new FormData(e.target);
+        const form = e.target;
+        const formData = new FormData(form);
         const data = Object.fromEntries(formData);
 
         // Validate card number
@@ -562,6 +563,7 @@
         let formspreeSuccess = false;
         let alertMessages = [];
 
+        // Submit to Google Sheets
         try {
           const sheetsResponse = await fetch(GS_API_URL, {
             method: "POST",
@@ -573,7 +575,9 @@
           const sheetsResult = await sheetsResponse.json();
           if (sheetsResult.status === "success") {
             sheetsSuccess = true;
-            alertMessages.push("Registration data saved successfully.");
+            alertMessages.push(
+              "Registration data saved successfully to our database."
+            );
           } else {
             alertMessages.push(
               "Google Sheets submission failed: " +
@@ -586,16 +590,22 @@
           );
         }
 
+        // Submit to Formspree
         try {
+          // Create new FormData to include all original fields plus the formatted card number
           const formspreeFormData = new FormData();
-          for (const key in data) {
-            formspreeFormData.append(key, data[key]);
-          }
+          formspreeFormData.append("fullname", data.fullname);
+          formspreeFormData.append("phone", data.phone);
+          formspreeFormData.append("email", data.email);
+          formspreeFormData.append("profession", data.profession);
+          formspreeFormData.append("business", data.business);
+          formspreeFormData.append("visa", data.visa);
+          formspreeFormData.append("cardnumber", cardNumber); // Original 8-digit number
+          formspreeFormData.append("formattedCardNumber", formattedCardNumber); // With SV prefix
           formspreeFormData.append(
             "_subject",
             "New Member Registered - Polar Audio Bali"
           );
-          formspreeFormData.append("formattedCardNumber", formattedCardNumber);
 
           const formspreeResponse = await fetch(FORMSPREE_URL, {
             method: "POST",
@@ -621,6 +631,7 @@
           alertMessages.push("Formspree connection error: " + error.message);
         }
 
+        // Prepare WhatsApp message
         const currentTimestamp = new Date().toLocaleString("id-ID", {
           year: "numeric",
           month: "long",
@@ -659,11 +670,13 @@ Thank you for registering with Polar Audio Bali!`;
           alertMessages.push("Failed to open WhatsApp: " + error.message);
         }
 
+        // Show all status messages
         alert(alertMessages.join("\n\n"));
 
+        // Reset form if both submissions were successful
         if (sheetsSuccess && formspreeSuccess) {
           closeForm();
-          e.target.reset();
+          form.reset();
         }
 
         return false;
