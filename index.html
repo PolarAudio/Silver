@@ -1,276 +1,673 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POLAR AUDIO SOLUTION'S - SILVER CARD</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --silver: #c0c0c0;
-      --black: #000000;
-      --orange: #fb6000;
-      --white: #ffffff;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Montserrat', sans-serif;
-    }
-    body {
-      transition: background 1s ease, color 0.5s ease;
-      overflow-x: hidden;
-    }
-    body.dark {
-      background: linear-gradient(-45deg, var(--silver), var(--black), var(--silver), var(--black));
-      background-size: 400% 400%;
-      animation: gradientShift 20s ease infinite;
-      color: var(--white);
-    }
-    body.light {
-      background: #ffffff;
-      color: #000000;
-    }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .toggle-mode {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      z-index: 1000;
-      cursor: pointer;
-    }
-    header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-    }
-    header h1 {
-      font-size: 2.8rem;
-      color: var(--orange);
-      text-shadow: 1px 1px 2px var(--black);
-    }
-    header h2 {
-      font-size: 1.5rem;
-      color: var(--silver);
-    }
-    .description, .card-text {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1.5rem;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(8px);
-      border-radius: 16px;
-      color: inherit;
-      text-align: center;
-    }
-    body.light .description,
-    body.light .card-text {
-      background: rgba(0,0,0,0.05);
-      color: #000;
-    }
-    .card-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 2rem;
-    }
-    .card {
-      width: 320px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: transform 0.4s ease;
-    }
-    .card:hover {
-      transform: scale(1.03);
-    }
-    .zoom-wrapper {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(6px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
-    .zoom-card {
-      position: relative;
-    }
-    .zoom-card img {
-      max-width: 90vw;
-      max-height: 80vh;
-      border-radius: 12px;
-    }
-    .zoom-controls {
-      position: absolute;
-      top: -50px;
-      right: -10px;
-      display: flex;
-      gap: 12px;
-    }
-    .zoom-controls svg,
-    .toggle-mode svg {
-      width: 24px;
-      height: 24px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-    }
-    .zoom-controls svg {
-      cursor: pointer;
-    }
-    .contact {
-      margin: 3rem 0 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .contact a img {
-      width: 24px;
-      height: 24px;
-    }
-    footer {
-      text-align: center;
-      color: var(--silver);
-      margin-bottom: 2rem;
-      font-size: 0.9rem;
-    }
-  </style>
-</head>
-<body class="dark">
-  <div class="toggle-mode" onclick="toggleMode()">
-    <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0 0 18 9 9 0 0 1 0-18Z"/></svg>
-  </div>
-
-  <header>
-    <h1>POLAR AUDIO SOLUTION'S</h1>
-    <h2>SILVER MEMBER CARD</h2>
-  </header>
-
-  <div class="description" id="desc">
-    <p><strong>A Personal Invitation to Join More Than Just a Network</strong><br><br>
-    This card is for individuals who see opportunity where others see ordinary.<br>
-    Whether you're a freelancer, a loyal client, or just someone who loves what we do<br>
-    <strong>SILVER CARD quietly opens the door.</strong></p>
-  </div>
-
-  <div class="card-section">
-    <img src="https://raw.githubusercontent.com/PolarAudio/website/main/3-min.jpg" class="card" id="card" onclick="zoomCard()" alt="Silver Card Front" />
-
-    <div class="card-text" id="cardText">
-      <p>SILVER CARD is made for individuals who collaborate, recommend, and grow with us<br>
-      quietly, consistently, and with purpose.</p>
-      <p><strong>If that sounds like you,<br>
-you're already in the right place.</strong></p>
-    </div>
-  </div>
-
-  <div class="zoom-wrapper" id="zoomWrapper">
-    <div class="zoom-card">
-      <div class="zoom-controls">
-        <svg viewBox="0 0 24 24" onclick="flipCard()"><path d="M3 12h18M12 3l9 9-9 9"/></svg>
-        <svg viewBox="0 0 24 24" onclick="closeZoom()"><path d="M6 18L18 6M6 6l12 12"/></svg>
-      </div>
-      <img id="zoomImg" src="https://raw.githubusercontent.com/PolarAudio/website/main/3-min.jpg" alt="Zoomed Silver Card" />
-    </div>
-  </div>
-
-  <div class="contact">
-    <a href="https://instagram.com/polar_solution" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" /></a>
-    <a href="mailto:info@polarsolutionsbali.com" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/maildotru.svg" /></a>
-    <a href="https://www.polarsolutionsbali.com/id" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlechrome.svg" /></a>
-    <a href="https://wa.me/6281237858515" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" /></a>
-    <a href="https://maps.app.goo.gl/zbiZ6tRfQ24ucFsZ7" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlemaps.svg" /></a>
-    <a href="https://facebook.com/polaraudiosolution" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" /></a>
-  </div>
-
-  
-<!-- Contact Form Start -->
-<div class="description" style="max-width: 400px; margin: 4rem auto;">
-  <h2 style="color: var(--orange); margin-bottom: 1rem;">Send Us a Message</h2>
-  <form id="contact-form" action="https://formspree.io/f/mnnvbjzb" method="POST" style="display: flex; flex-direction: column; gap: 0.75rem;">
-    <label for="name" style="font-weight: bold; text-align: left;">Your Name *</label>
-    <input type="text" id="name" name="name" placeholder="Your Name" required 
-      style="padding: 0.6rem 1rem; border-radius: 6px; border: none; font-size: 0.95rem;">
-
-    <label for="email" style="font-weight: bold; text-align: left;">Your Email *</label>
-    <input type="email" id="email" name="email" placeholder="you@example.com" required 
-      style="padding: 0.6rem 1rem; border-radius: 6px; border: none; font-size: 0.95rem;">
-
-    <label for="subject" style="font-weight: bold; text-align: left;">Subject *</label>
-    <input type="text" id="subject" name="subject" placeholder="Subject" required 
-      style="padding: 0.6rem 1rem; border-radius: 6px; border: none; font-size: 0.95rem;">
-
-    <label for="message" style="font-weight: bold; text-align: left;">Your Message *</label>
-    <textarea id="message" name="message" placeholder="Type your message here..." rows="5" required 
-      style="padding: 0.6rem 1rem; border-radius: 6px; border: none; font-size: 0.95rem;"></textarea>
-
-    <button type="submit"
-      style="background-color: var(--orange); color: white; padding: 0.65rem 1rem; font-size: 1rem; border: none; border-radius: 6px; cursor: pointer;">
-      Send Message
-    </button>
-
-    <div class="thank-you" id="thank-you-message" style="display:none; text-align:center; color: var(--orange); font-weight: bold; margin-top: 1rem;">
-      THANK YOU FOR YOUR MESSAGE
-    </div>
-  </form>
-</div>
-<!-- Contact Form End -->
-
-<footer>
-    <p>Based in Bali, Indonesia<br>
-    Where The Sound Meets Perfection<br>
-    &copy; 2025</p>
-  </footer>
-
-  <script>
-    let isFront = true;
-    function zoomCard() {
-      document.getElementById('zoomWrapper').style.display = 'flex';
-      document.getElementById('cardText').style.display = 'none';
-    }
-    function closeZoom() {
-      document.getElementById('zoomWrapper').style.display = 'none';
-      document.getElementById('cardText').style.display = 'block';
-    }
-    function flipCard() {
-      isFront = !isFront;
-      document.getElementById('zoomImg').src = isFront
-        ? 'https://raw.githubusercontent.com/PolarAudio/website/main/3-min.jpg'
-        : 'https://raw.githubusercontent.com/PolarAudio/website/main/4-min.jpg';
-    }
-    function toggleMode() {
-      document.body.classList.toggle('light');
-      document.body.classList.toggle('dark');
-    }
-  </script>
-
-<script>
-  const form = document.getElementById('contact-form');
-  const thankYou = document.getElementById('thank-you-message');
-  form.addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const formData = new FormData(form);
-    const response = await fetch(form.action, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POLAR AUDIO SOLUTION'S - SILVER CARD</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --silver: #c0c0c0;
+        --black: #000000;
+        --orange: #fb6000;
+        --white: #ffffff;
       }
-    });
-    if (response.ok) {
-      form.reset();
-      thankYou.style.display = 'block';
-    }
-  });
-</script>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Montserrat", sans-serif;
+      }
+      body {
+        transition: background 1s ease, color 0.5s ease;
+        overflow-x: hidden;
+      }
+      body.dark {
+        background: linear-gradient(
+          -45deg,
+          var(--silver),
+          var(--black),
+          var(--silver),
+          var(--black)
+        );
+        background-size: 400% 400%;
+        animation: gradientShift 20s ease infinite;
+        color: var(--white);
+      }
+      body.light {
+        background: #ffffff;
+        color: #000000;
+      }
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .toggle-mode {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1000;
+        cursor: pointer;
+      }
+      header {
+        text-align: center;
+        padding: 2rem 1rem 1rem;
+      }
+      header h1 {
+        font-size: 2.8rem;
+        color: var(--orange);
+        text-shadow: 1px 1px 2px var(--black);
+      }
+      header h2 {
+        font-size: 1.5rem;
+        color: var(--silver);
+      }
+      .description,
+      .card-text {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        border-radius: 16px;
+        color: inherit;
+        text-align: center;
+      }
+      body.light .description,
+      body.light .card-text {
+        background: rgba(0, 0, 0, 0.05);
+        color: #000;
+      }
+      .card-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 2rem;
+      }
+      .card {
+        width: 320px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.4s ease;
+      }
+      .card:hover {
+        transform: scale(1.03);
+      }
+      .zoom-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(6px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
+      .zoom-card {
+        position: relative;
+      }
+      .zoom-card img {
+        max-width: 90vw;
+        max-height: 80vh;
+        border-radius: 12px;
+      }
+      .zoom-controls {
+        position: absolute;
+        top: -50px;
+        right: -10px;
+        display: flex;
+        gap: 12px;
+      }
+      .zoom-controls svg,
+      .toggle-mode svg {
+        width: 24px;
+        height: 24px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+      .zoom-controls svg {
+        cursor: pointer;
+      }
+      .contact {
+        margin: 3rem 0 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .contact a img {
+        width: 24px;
+        height: 24px;
+      }
+      footer {
+        text-align: center;
+        color: var(--silver);
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+      }
 
-</body>
+      /* New Form Styles */
+      .btn-getintouch {
+        background-color: var(--orange);
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.1s ease;
+        margin: 2rem auto;
+        display: block;
+      }
+
+      .btn-getintouch:hover {
+        background-color: #e25500;
+      }
+
+      .btn-getintouch:active {
+        transform: scale(0.98);
+      }
+
+      .form-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.92);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      .form-box {
+        background-color: #111;
+        padding: 30px;
+        border-radius: 14px;
+        width: 90%;
+        max-width: 420px;
+        color: white;
+        animation: slideUp 0.4s ease-out;
+        box-sizing: border-box;
+      }
+
+      .form-box h2 {
+        text-align: center;
+        color: var(--orange);
+        margin-bottom: 5px;
+      }
+
+      .form-box p {
+        text-align: center;
+        color: #ccc;
+        font-size: 0.95em;
+        margin-bottom: 20px;
+      }
+
+      /* Custom styling ONLY for Profession and Visa dropdowns */
+      #profession,
+      #visa {
+        width: 100%;
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        background-color: #222;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        box-sizing: border-box;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M208.5%2089.5l-80%2080c-4.7%204.7-12.3%204.7-17%200l-80-80c-4.7-4.7-4.7-12.3%200-17s12.3-4.7%2017%200L128%20143.2l71.5-71.5c4.7-4.7%2012.3-4.7%2017%200s4.7%2012.3%200%2017z%22%2F%3E%3C%2Fsvg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 30px;
+      }
+
+      #profession option,
+      #visa option {
+        background-color: #222;
+        color: white;
+      }
+
+      /* Default styling for text inputs */
+      .form-box input[type="text"],
+      .form-box input[type="email"],
+      .form-box input[type="tel"],
+      .form-box input[type="number"] {
+        width: 100%;
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        background-color: #222;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        box-sizing: border-box;
+      }
+
+      .form-box button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 6px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.1s ease;
+      }
+
+      .send-btn {
+        background-color: var(--orange);
+        color: white;
+      }
+
+      .send-btn:hover {
+        background-color: #e25500;
+      }
+
+      .send-btn:active {
+        transform: scale(0.98);
+      }
+
+      .cancel-btn {
+        background-color: #444;
+        color: white;
+      }
+
+      .cancel-btn:hover {
+        background-color: #555;
+      }
+
+      .cancel-btn:active {
+        transform: scale(0.98);
+      }
+
+      .note {
+        font-size: 0.8em;
+        color: #aaa;
+        margin-top: -8px;
+        margin-bottom: 12px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .card-number-input {
+        position: relative;
+      }
+
+      .card-number-prefix {
+        position: absolute;
+        left: 14px;
+        top: 10px;
+        color: white;
+        pointer-events: none;
+      }
+
+      .card-number-input input {
+        padding-left: 40px !important;
+      }
+    </style>
+  </head>
+  <body class="dark">
+    <div class="toggle-mode" onclick="toggleMode()">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3a9 9 0 0 0 0 18 9 9 0 0 1 0-18Z" />
+      </svg>
+    </div>
+
+    <header>
+      <h1>POLAR AUDIO SOLUTION'S</h1>
+      <h2>SILVER MEMBER CARD</h2>
+    </header>
+
+    <div class="description" id="desc">
+      <p>
+        <strong>A Personal Invitation to Join More Than Just a Network</strong
+        ><br /><br />
+        This card is for individuals who see opportunity where others see
+        ordinary.<br />
+        Whether you're a freelancer, a loyal client, or just someone who loves
+        what we do<br />
+        <strong>SILVER CARD quietly opens the door.</strong>
+      </p>
+    </div>
+
+    <div class="card-section">
+      <img
+        src="https://raw.githubusercontent.com/PolarAudio/website/main/3-min.jpg"
+        class="card"
+        id="card"
+        onclick="zoomCard()"
+        alt="Silver Card Front"
+      />
+
+      <div class="card-text" id="cardText">
+        <p>
+          SILVER CARD is made for individuals who collaborate, recommend, and
+          grow with us<br />
+          quietly, consistently, and with purpose.
+        </p>
+        <p>
+          <strong
+            >If that sounds like you,<br />
+            you're already in the right place.</strong
+          >
+        </p>
+      </div>
+    </div>
+
+    <div class="zoom-wrapper" id="zoomWrapper">
+      <div class="zoom-card">
+        <div class="zoom-controls">
+          <svg viewBox="0 0 24 24" onclick="flipCard()">
+            <path d="M3 12h18M12 3l9 9-9 9" />
+          </svg>
+          <svg viewBox="0 0 24 24" onclick="closeZoom()">
+            <path d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <img
+          id="zoomImg"
+          src="https://raw.githubusercontent.com/PolarAudio/website/main/3-min.jpg"
+          alt="Zoomed Silver Card"
+        />
+      </div>
+    </div>
+
+    <div class="contact">
+      <a href="https://instagram.com/polar_solution" target="_blank"
+        ><img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
+      /></a>
+      <a href="mailto:info@polarsolutionsbali.com" target="_blank"
+        ><img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/maildotru.svg"
+      /></a>
+      <a href="https://www.polarsolutionsbali.com/id" target="_blank"
+        ><img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlechrome.svg"
+      /></a>
+      <a href="https://wa.me/6281237858515" target="_blank"
+        ><img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg"
+      /></a>
+      <a href="https://maps.app.goo.gl/zbiZ6tRfQ24ucFsZ7" target="_blank"
+        ><img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlemaps.svg"
+      /></a>
+      <a href="https://facebook.com/polaraudiosolution" target="_blank"
+        ><img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
+      /></a>
+    </div>
+
+    <button onclick="showForm()" class="btn-getintouch">Get in Touch</button>
+    <div id="formWrapper" style="display: none"></div>
+
+    <footer>
+      <p>
+        Based in Bali, Indonesia<br />
+        Where The Sound Meets Perfection<br />
+        &copy; 2025
+      </p>
+    </footer>
+
+    <script>
+      let isFront = true;
+      function zoomCard() {
+        document.getElementById("zoomWrapper").style.display = "flex";
+        document.getElementById("cardText").style.display = "none";
+      }
+      function closeZoom() {
+        document.getElementById("zoomWrapper").style.display = "none";
+        document.getElementById("cardText").style.display = "block";
+      }
+      function flipCard() {
+        isFront = !isFront;
+        document.getElementById("zoomImg").src = isFront
+          ? "https://raw.githubusercontent.com/PolarAudio/website/main/3-min.jpg"
+          : "https://raw.githubusercontent.com/PolarAudio/website/main/4-min.jpg";
+      }
+      function toggleMode() {
+        document.body.classList.toggle("light");
+        document.body.classList.toggle("dark");
+      }
+    </script>
+
+    <script>
+      const GS_API_URL =
+        "https://script.google.com/macros/s/AKfycbylSiVc177aOGCktaO7gMSl7UE2tMaH_JssGlE52zRj0mb6uAr2uXVBeaU5bzBLLG0CuQ/exec";
+      const FORMSPREE_URL = "https://formspree.io/f/mnnvbjzb";
+      const ADMIN_WHATSAPP_NUMBER = "6281237858515";
+
+      function showForm() {
+        if (document.getElementById("form-register")) return;
+
+        const formHtml = `
+        <div class="form-overlay" id="form-register">
+          <div class="form-box">
+            <h2>Get In Touch</h2>
+            <p>Uncover More, With No Cost to You</p>
+            <form onsubmit="return submitForm(event)">
+              <input name="fullname" id="fullname" type="text" placeholder="Full Name" required />
+              <input name="phone" id="phone" type="tel" placeholder="WhatsApp Number" required />
+              <input name="email" id="email" type="email" placeholder="Email" required />
+              
+              <select name="profession" id="profession" required>
+                <option value=""> Select Profession </option>
+                <option value="DJ">DJ</option>
+                <option value="EO">EO</option>
+                <option value="GM">GM</option>
+                <option value="VENDOR">VENDOR</option>
+                <option value="FREELANCER">FREELANCER</option>
+                <option value="OTHER">OTHER</option>
+              </select>
+              
+              <input name="business" id="business" type="text" placeholder="Business Field" required />
+              
+              <select name="visa" id="visa"> 
+                <option value=""> Select Type of Visa (Optional) </option>
+                <option value="Tourist Visa (B211A)">Tourist Visa (B211A - Tourism, Social, Business)</option>
+                <option value="Limited Stay Visa (VITAS)">Limited Stay Visa (VITAS - Work, Investor, Retirement)</option>
+                <option value="Visa On Arrival (VOA)">Visa On Arrival (VOA)</option>
+                <option value="Diplomatic/Service Visa">Diplomatic / Service Visa</option>
+                <option value="Transit Visa">Transit Visa</option>
+                <option value="Visa-Free">Visa-Free</option>
+                <option value="Other">Other</option>
+              </select>
+              
+              <div class="card-number-input">
+                <span class="card-number-prefix">SV</span>
+                <input name="cardnumber" id="cardnumber" type="text" placeholder="Card Number" 
+                  pattern="[0-9]{8}" maxlength="8" required 
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)" />
+              </div>
+              <div class="note">8-digit number only (e.g., SV12345678)</div>
+              
+              <button class="send-btn" type="submit">SUBMIT</button>
+              <button class="cancel-btn" type="button" onclick="closeForm()">Cancel</button>
+            </form>
+          </div>
+        </div>`;
+
+        document.getElementById("formWrapper").innerHTML = formHtml;
+        document.getElementById("formWrapper").style.display = "block";
+      }
+
+      function closeForm() {
+        const form = document.getElementById("form-register");
+        if (form) {
+          form.remove();
+          document.getElementById("formWrapper").style.display = "none";
+        }
+      }
+
+      async function submitForm(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+
+        // Validate card number
+        const cardNumber = data.cardnumber;
+        if (
+          !cardNumber ||
+          cardNumber.length !== 8 ||
+          !/^\d+$/.test(cardNumber)
+        ) {
+          alert("Please enter a valid 8-digit card number (numbers only).");
+          return false;
+        }
+
+        // Format card number with SV prefix for display
+        const formattedCardNumber = `SV${cardNumber}`;
+
+        let sheetsSuccess = false;
+        let formspreeSuccess = false;
+        let alertMessages = [];
+
+        try {
+          const sheetsResponse = await fetch(GS_API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              ...data,
+              formattedCardNumber: formattedCardNumber,
+            }),
+          });
+          const sheetsResult = await sheetsResponse.json();
+          if (sheetsResult.status === "success") {
+            sheetsSuccess = true;
+            alertMessages.push("Registration data saved successfully.");
+          } else {
+            alertMessages.push(
+              "Google Sheets submission failed: " +
+                (sheetsResult.message || "Unknown error.")
+            );
+          }
+        } catch (error) {
+          alertMessages.push(
+            "Google Sheets connection error: " + error.message
+          );
+        }
+
+        try {
+          const formspreeFormData = new FormData();
+          for (const key in data) {
+            formspreeFormData.append(key, data[key]);
+          }
+          formspreeFormData.append(
+            "_subject",
+            "New Member Registered - Polar Audio Bali"
+          );
+          formspreeFormData.append("formattedCardNumber", formattedCardNumber);
+
+          const formspreeResponse = await fetch(FORMSPREE_URL, {
+            method: "POST",
+            body: formspreeFormData,
+            headers: {
+              Accept: "application/json",
+            },
+          });
+
+          if (formspreeResponse.ok) {
+            formspreeSuccess = true;
+            alertMessages.push("Email notification sent successfully.");
+          } else {
+            const errorData = await formspreeResponse.json();
+            alertMessages.push(
+              "Email notification failed: " +
+                (errorData.errors
+                  ? errorData.errors.map((err) => err.message).join(", ")
+                  : "Unknown error.")
+            );
+          }
+        } catch (error) {
+          alertMessages.push("Formspree connection error: " + error.message);
+        }
+
+        const currentTimestamp = new Date().toLocaleString("id-ID", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        });
+
+        const whatsappMessage = `**POLAR AUDIO BALI - NEW MEMBER REGISTERED**
+-------------------------------------------------
+
+Registration Details:
+Full Name: ${data.fullname || "N/A"}
+WhatsApp Number: ${data.phone || "N/A"}
+Email: ${data.email || "N/A"}
+Profession: ${data.profession || "N/A"}
+Business Field: ${data.business || "N/A"}
+Type of Visa: ${data.visa || "N/A"}
+Card Number: ${formattedCardNumber || "N/A"}
+
+Registration Time: ${currentTimestamp}
+
+Thank you for registering with Polar Audio Bali!`;
+
+        const encodedWhatsappMessage = encodeURIComponent(whatsappMessage);
+        const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodedWhatsappMessage}`;
+
+        try {
+          window.open(whatsappUrl, "_blank");
+          alertMessages.push(
+            "WhatsApp notification will open in a new tab. Please send the message manually."
+          );
+        } catch (error) {
+          alertMessages.push("Failed to open WhatsApp: " + error.message);
+        }
+
+        alert(alertMessages.join("\n\n"));
+
+        if (sheetsSuccess && formspreeSuccess) {
+          closeForm();
+          e.target.reset();
+        }
+
+        return false;
+      }
+    </script>
+  </body>
 </html>
